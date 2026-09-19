@@ -1,159 +1,222 @@
+/* ============================================================
+   MurFood — стили сайта
+
+   Разделы файла:
+     1. Общие настройки (цвета, шрифт, body)
+     2. Шапка главной страницы
+     3. Главная страница
+     4. Подвал — одинаковый на всех страницах
+     5. Страница menu
+     6. Страница about
+     7. Страница profile
+     8. Страница shop (корзина)
+   ============================================================ */
+
 @import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
 
-*{
+
+/* ============================================================
+   1. ОБЩИЕ НАСТРОЙКИ
+   ============================================================ */
+
+/* Цвета сайта записаны здесь по одному разу.
+   Поменяешь цвет тут — он поменяется сразу на всех страницах. */
+:root {
+    --green: #44A252;
+    --yellow: #EDCF36;
+    --photo-grey: #EBEBEB;
+    --text-white: white;
+    --delete-red: #E86A5B;
+}
+
+* {
     font-family: 'Jost', sans-serif;
 }
 
-.body{
+/* Это правило про тег <body>, поэтому точка перед словом не нужна.
+   Точка означает класс, а у body класса нет. */
+
+/* Три строки flex + min-height прижимают подвал к низу экрана.
+   Страница делится на три этажа: шапка, main и подвал.
+   min-height: 100vh — «страница высотой минимум с экран»
+   (vh = сотая часть высоты окна, значит 100vh — весь экран). */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     width: 100%;
-    background-color: #44A252;
+    background-color: var(--green);
     margin: 0;
     padding: 0;
 }
 
-.section{
+/* main растягивается и занимает всё свободное место между
+   шапкой и подвалом. Если содержимого мало — растянется сильнее,
+   если много — просто станет длиннее экрана.
+   Зелёный фон тоже здесь: правило про main в файле одно. */
+main {
+    flex-grow: 1;
+    background-color: var(--green);
+}
+
+/* Обводка букв. Работает в Chrome и Edge.
+   В Firefox обводки не будет — буквы останутся просто белыми. */
+
+
+/* ============================================================
+   2. ШАПКА ГЛАВНОЙ СТРАНИЦЫ
+   ============================================================ */
+
+.section {
     box-sizing: border-box;
     justify-content: space-between;
     align-items: center;
     display: flex;
     width: 100%;
     height: 147px;
-    background-color: #EDCF36;
+    background-color: var(--yellow);
 }
 
-.left{
+.left {
     display: flex;
     align-items: center;
     width: 494px;
     height: 147px;
 }
 
-.right{
+.right {
     display: flex;
     align-items: center;
 }
 
-.left img{
+.left img {
     width: 135px;
     height: 135px;
 }
 
-.left a {
+.right img {
+    width: 150px;
+    height: 150px;
+}
+
+/* Ссылка About в шапке и такая же ссылка в подвале выглядят одинаково,
+   поэтому оба селектора записаны через запятую в одном правиле. */
+.left a,
+.footer-left a {
     font-weight: 400;
     text-decoration: none;
     margin-left: 70px;
     text-align: center;
     font-size: 64px;
-    color: white;
+    color: var(--text-white);
     -webkit-text-stroke: 1px black;
 }
 
-.right img{
-    width: 150px;
-    height: 150px;
-}
 
-main{
-    background-color: #44A252;
-}
+/* ============================================================
+   3. ГЛАВНАЯ СТРАНИЦА
+   ============================================================ */
 
-.description{
+.description {
     display: flex;
 }
 
-
-.text{
+.text {
     margin-left: 33px;
 }
 
-.text p{
+.text p {
     font-size: 64px;
     color: rgb(241, 241, 241);
     -webkit-text-stroke: 1px black;
 }
 
-
-.rightpart img{
+.rightpart img {
     width: 672px;
     height: 448px;
     margin-top: 31px;
     margin-right: 76px;
 }
 
-
-.menu-btn{
+/* Кнопка menu — это ссылка <a>, поэтому её нужно
+   выровнять по центру вручную и убрать подчёркивание. */
+.menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
     margin-top: 32px;
     width: 458px;
     height: 147px;
-    background-color: #EDCF36;
+    background-color: var(--yellow);
     border-radius: 50px;
     font-size: 96px;
-    color: white;
+    color: var(--text-white);
     -webkit-text-stroke: 1px black;
     text-decoration: none;
+    margin-bottom: 30px;
 }
 
-
-
-
-.section-top3{
-    text-align: center;
-    background-color: #EDCF36;
+/* Жёлтая полоса с заголовком. Такие же полосы есть
+   на страницах menu и profile — правила у них одинаковые. */
+.section-top3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    background-color: var(--yellow);
     font-size: 96px;
-    color: white;
+    color: var(--text-white);
     -webkit-text-stroke: 1px black;
 }
 
-.top3-section p{
-    display: flex;
-    justify-content: center;
-}
-
-
-.cards{
+.cards {
     display: flex;
     justify-content: center;
     gap: 20px;
     padding: 40px;
 }
 
-.card{
+.card {
     display: flex;
-    justify-content: flex-start; 
+    justify-content: flex-start;
     gap: 10px;
     flex-direction: column;
     align-items: center;
     padding: 20px;
     width: 379px;
     height: auto;
-    background-color: #EDCF36;
+    background-color: var(--yellow);
 }
 
-
-.p1{
+.p1 {
     margin: 0;
     display: flex;
     align-items: center;
     font-size: 72px;
-    color: white;
+    color: var(--text-white);
     -webkit-text-stroke: 1px black;
 }
 
-
-.card img{
+.card img {
     margin-left: 21px;
     width: 326px;
     height: 326px;
 }
 
-.p2{
+.p2 {
     margin: 0;
     font-size: 48px;
-    color: white;
+    color: var(--text-white);
     -webkit-text-stroke: 1px black;
 }
 
-footer{
+
+/* ============================================================
+   4. ПОДВАЛ — ОДИНАКОВЫЙ НА ВСЕХ СТРАНИЦАХ
+   ============================================================ */
+
+footer {
     box-sizing: border-box;
     justify-content: space-between;
     align-items: center;
@@ -161,17 +224,17 @@ footer{
     width: 100%;
     height: 147px;
     padding: 20px 40px;
-    background-color: #EDCF36;
+    background-color: var(--yellow);
 }
 
-.footer-left{
+.footer-left {
     display: flex;
     align-items: center;
     width: 494px;
     height: 147px;
 }
 
-.footer-right{
+.footer-right {
     display: flex;
     gap: 33px;
     align-items: center;
@@ -179,99 +242,82 @@ footer{
     height: 138px;
 }
 
-.footer-left a{
-    font-weight: 400;
-    text-decoration: none;
-    margin-left: 70px;
-    text-align: center;
-    font-size: 64px;
-    color: white;
-    -webkit-text-stroke: 1px black;
-}
-
-.footer-left img{
+.footer-left img {
     width: 125px;
     height: 125px;
 }
 
 
-.header-menu{
+/* ============================================================
+   5. СТРАНИЦА MENU
+   ============================================================ */
+
+.header-menu {
     position: relative;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     height: 147px;
     width: 100%;
-    background-color: #EDCF36;
+    background-color: var(--yellow);
 }
 
-
-.header-left{
+.header-left {
     position: absolute;
     left: 20px;
     margin: 0;
 }
 
-
-.header-text{
-    flex-grow: 1;
-    text-align: center;
-    margin: 0;
-    color: azure;
-    -webkit-text-stroke: 1px black;
-}
-
-
-
-.main-menu{
-    background-color: #44A252;
+/* height: 100% отсюда убран: он ничего не давал, потому что
+   у родителя высота не задана, а от чего тогда считать проценты —
+   браузеру непонятно. Растягиванием теперь занимается flex-grow. */
+.main-menu {
+    background-color: var(--green);
     width: 100%;
-    height: 100%;
 }
 
-.carts-menu-drinks{
+.carts-menu-drinks {
     display: flex;
     justify-content: center;
     gap: 93px;
+    margin-bottom: 50px;
 }
 
-.cart-menu{
+.cart-menu {
     margin-top: 28px;
     width: 397px;
-    background-color: #EDCF36;
+    background-color: var(--yellow);
+    transition: all;
 }
 
-
-.first-part{
+.first-part {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
 }
 
-
-
-.p-menu1{
+.p-menu1 {
     margin: 0;
     padding: 0;
-    color: white;
+    color: var(--text-white);
     -webkit-text-stroke: 1px black;
     text-align: center;
     font-size: 40px;
 }
 
-.white-background-img{
+/* Серый прямоугольник под картинку напитка */
+.white-background-img {
     display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
     width: 80%;
     height: 240px;
-    background-color: #EBEBEB;
+    background-color: var(--photo-grey);
 }
 
-
-.white-background-img img{
+.white-background-img img {
     max-width: 60%;
     max-height: 90%;
     margin: 0;
@@ -279,7 +325,26 @@ footer{
     width: 100%;
 }
 
-.second-part{
+/* Серый прямоугольник под картинку еды — картинка занимает больше места */
+.white-background-imgo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 80%;
+    height: 240px;
+    background-color: var(--photo-grey);
+}
+
+.white-background-imgo img {
+    max-width: 90%;
+    max-height: 90%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.second-part {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -288,42 +353,42 @@ footer{
     padding: 10px 40px;
 }
 
-
-.use-btn{
+/* min-width нужен, чтобы кнопка не прыгала: после нажатия
+   скрипт на секунду меняет надпись use на ok!, а слова разной длины.
+   138px — это ширина кнопки с надписью use, её и фиксируем. */
+.use-btn {
     width: auto;
+    min-width: 138px;
     height: auto;
-    color: white;
+    color: var(--text-white);
     padding: 5px 44px;
     -webkit-text-stroke: 1px black;
     font-size: 32px;
     border-radius: 15px;
 }
 
-
-.p-menu2{
+.p-menu2 {
     margin: 0;
     padding: 0;
-    color: white;
+    color: var(--text-white);
     -webkit-text-stroke: 1px black;
     font-size: 48px;
 }
 
-
-
-.section-food-menu{
+.section-food-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 150px;
-    background-color: #EDCF36;
-    color: #ffffff;
+    background-color: var(--yellow);
+    color: var(--text-white);
     -webkit-text-stroke: 1px black;
     font-size: 85px;
-    text-align: center;
     margin: 0;
-    flex-grow: 1;
 }
 
-
-.carts-menu-food{
+.carts-menu-food {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
@@ -332,55 +397,30 @@ footer{
     padding: 97px;
 }
 
-.white-background-imgo{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    width: 80%;
-    height: 240px;
-    background-color: #EBEBEB;
-}
 
+/* ============================================================
+   6. СТРАНИЦА ABOUT
+   ============================================================ */
 
-
-
-
-.white-background-imgo img{
-    max-width: 90%;
-    max-height: 90%;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-}
-
-
-
-
-
-
-/* header about */
-.header-about{
+.header-about {
     position: relative;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     height: 147px;
     width: 100%;
-    background-color: #EDCF36;
+    background-color: var(--yellow);
     margin: 0;
     padding: 0;
 }
 
-
-.header-left-about{
+.header-left-about {
     position: absolute;
     left: 20px;
     margin: 0;
 }
 
-
-.header-text-about{
+.header-text-about {
     flex-grow: 1;
     text-align: center;
     margin: 0;
@@ -389,54 +429,46 @@ footer{
     -webkit-text-stroke: 1px black;
 }
 
-/* main about */
-
-.main-about{
+.main-about {
     margin: 0;
     padding: 0;
 }
 
-/* text about */
-
-.about-text{
+.about-text {
     margin: 0;
     padding: 0;
-    color: white;
+    color: var(--text-white);
     -webkit-text-stroke: 1px black;
     font-size: 64px;
     font-weight: 500;
 }
 
-/* first p */
-
-
-
-.main-about .first-p{
+.main-about .first-p {
     margin-top: 0;
 }
 
-
-.main-about .third-p{
+.main-about .third-p {
     margin-bottom: 0;
 }
 
 
-/* header profile */
+/* ============================================================
+   7. СТРАНИЦА PROFILE
+   ============================================================ */
 
-.header-profile{
+.header-profile {
     position: relative;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     height: 147px;
     width: 100%;
-    background-color: #EDCF36;
+    background-color: var(--yellow);
     margin: 0;
     padding: 0;
 }
 
-
-.header-left-profile{
+.header-left-profile {
     position: absolute;
     left: 20px;
     margin: 0;
@@ -444,104 +476,93 @@ footer{
     height: 109px;
 }
 
-
-.header-text-profile{
+.header-text-profile {
     flex-grow: 1;
     text-align: center;
     margin: 0;
-    font-size: 32px;
     color: azure;
     -webkit-text-stroke: 1px black;
 }
 
-
-/* profile */
-.Users-Profile{
+.Users-Profile {
     display: flex;
 }
 
-.Users-Profile img{
+.Users-Profile img {
     width: 330px;
     height: 330px;
     margin-right: 50px;
 }
 
-.username{
+.username {
     font-size: 64px;
-    color: white;
-    -webkit-text-stroke: 1px black
+    color: var(--text-white);
+    -webkit-text-stroke: 1px black;
 }
 
-.Users-Profile h2{
+.Users-Profile h2 {
     margin: 0;
     padding: 0;
 }
 
-
-.Users-money{
-    background-color: #EDCF36;
+.Users-money {
+    background-color: var(--yellow);
     border-radius: 41px;
     text-align: center;
     padding: 4px 75px;
 }
 
-.Users-money p{
+.Users-money p {
     margin: 0;
 }
 
-/* profile description */
-
-.Users-description{
+/* Поле «no description».
+   Цвет текста обязательно должен отличаться от цвета фона,
+   иначе надпись пропадёт. */
+.Users-description {
     box-sizing: border-box;
     margin-top: 50px;
+    margin-bottom: 50px;
     width: 100%;
     height: 144px;
-    color: #EBEBEB;
-    background-color: #EBEBEB;
-    border: 25px solid #EDCF36;
+    color: #6E6E6E;
+    background-color: var(--photo-grey);
+    border: 25px solid var(--yellow);
     -webkit-text-stroke: 1px black;
     font-size: 58px;
 }
 
-.Users-description p{
+.Users-description p {
     margin: 0;
     margin-left: 20px;
 }
 
-/* section */
-
-
-.favorite-food-section{
-    background-color: #EDCF36;
-    -webkit-text-stroke: 1px black;
-    color: white;
+.favorite-food-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 144px;
-    text-align: center;
+    background-color: var(--yellow);
+    color: var(--text-white);
+    -webkit-text-stroke: 1px black;
     font-size: 52px;
 }
 
-
-/* grid menu */
-
-
-.favorite-food-grid{
+.favorite-food-grid {
     display: grid;
-    grid-template-rows: repeat(1, 1fr);
     grid-template-columns: repeat(3, 1fr);
     gap: 62px;
-    margin-left: 50px;
-    padding-top: 135px;
-    padding-bottom: 135px;
+    justify-items: center;
+    padding: 135px 50px;
 }
 
 
+/* ============================================================
+   8. СТРАНИЦА SHOP (КОРЗИНА)
+   ============================================================ */
 
-/* shop page */
-
-
-
-.header-shop{
+.header-shop {
     position: relative;
     box-sizing: border-box;
     display: flex;
@@ -549,11 +570,10 @@ footer{
     align-items: center;
     height: 147px;
     width: 100%;
-    background-color: #EDCF36;
+    background-color: var(--yellow);
 }
 
-
-.header-leftt{
+.header-leftt {
     position: absolute;
     left: 20px;
     margin: 0;
@@ -561,17 +581,19 @@ footer{
     height: 109px;
 }
 
-.back-btn{
+.back-btn {
     width: 109px;
     height: 109px;
 }
 
-.imagee{
+.imagee {
     width: 151px;
     height: 151px;
 }
 
-.header-text{
+/* Заголовок в шапке. Раньше это правило было записано в файле два раза,
+   и работало только нижнее. Теперь оно одно. */
+.header-text {
     flex-grow: 1;
     text-align: center;
     margin: 0;
@@ -580,59 +602,353 @@ footer{
     -webkit-text-stroke: 1px black;
 }
 
-.main-shop{
+/* Название страницы одного размера на всех страницах сайта */
+.header-text h1,
+.header-text-about h1,
+.header-text-profile h1 {
+    margin: 0;
+    font-size: 96px;
+}
+
+/* Заголовок внутри жёлтой полосы: размер берётся у самой полосы */
+.section-top3 h1,
+.section-food-menu h2,
+.favorite-food-section h2 {
+    margin: 0;
+    font-size: inherit;
+    font-weight: normal;
+}
+
+.main-shop {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.food-grid{
+/* Сетка корзины. Высоту не задаём: товаров может быть
+   и один, и десять — сетка подстроится сама. */
+.food-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    gap: 40px;
+    box-sizing: border-box;
     width: 100%;
-    height: 1265px;
-    margin-left: 138px;
+    justify-items: center;
+    padding: 40px;
 }
 
+/* Карточка товара в корзине.
+   В классе два слова пишутся через дефис: main-shop.
+   Если написать main.shop, браузер будет искать элемент
+   сразу с двумя классами — main и shop — и ничего не найдёт. */
+.main-shop .cart-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 397px;
+    padding: 15px;
+    background-color: var(--yellow);
+    border-radius: 10px;
+}
 
-.buy-all-btn{
-    background-color: #EDCF36;
-    color: rgb(255, 255, 255);
+.delete-btn {
+    width: auto;
+    height: auto;
+    padding: 5px 30px;
+    background-color: var(--delete-red);
+    color: var(--text-white);
     -webkit-text-stroke: 1px black;
+    border: none;
+    border-radius: 15px;
+    font-size: 32px;
+}
+
+/* Надпись, когда корзина пуста */
+.empty-cart-text {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-white);
+    -webkit-text-stroke: 1px black;
+    font-size: 64px;
+}
+
+.buy-all-btn {
+    background-color: var(--yellow);
+    color: var(--text-white);
+    -webkit-text-stroke: 1px black;
+    border: none;
     border-radius: 82px;
     text-align: center;
     font-size: 60px;
     width: fit-content;
     padding: 20px 40px;
-    display: inline;
     margin-bottom: 50px;
 }
 
-.main.shop .cart-menu {
+
+
+/* login.html */
+
+
+.login-form,
+.register-form {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #EDCF36;
-    border-radius: 10px;
-    padding: 15px;
-    width: 397px;
-    box-sizing: border-box;
+    gap: 14px;
+    max-width: 460px;
+    margin: 0 auto 40px;
 }
 
-.main-shop .cart-menu div{
-    width: 100%;
-    height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    margin: 10px 0;
+.login-form label,
+.register-form label{
+    font-size: 32px;
+    color: white;
+    -webkit-text-stroke: 1px black;
+    margin-bottom: -8px;
 }
 
-.main.shop .cart-menu img{
-    width: 100%;
+.login-form input,
+.register-form input {
+    font-family: inherit;
+    font-size: 28px;
+    padding: 10px 18px;
+    border: 5px solid var(--yellow);;
+    border-radius: 12px;
+    background: #FFFDF3
+}
+
+.login-title{
+    margin: 30px 0 10px;
+    text-align: center;
+    font-size: 64px;
+    color: #fff;
+    -webkit-text-stroke: 1px black;
+}
+
+.login-form button,
+.register-form button{
+    font-family: inherit;
+    font-size: 50px;
+    color: #fff;
+    -webkit-text-stroke: 1px black;
+    background: var(--yellow);
+    border: none;
+    border-radius: 16px;
+    padding: 9px 20px;
+    cursor: pointer;
+}
+
+.form-msg{
+    margin: 0;
+    min-height: 40px;
+    text-align: center;
+    font-size: 28px;
+    color: #fff;
+}
+
+/* подсветка login.html */
+
+.login-form input:focus,
+.register-form input:focus {
+    outline: 4px solid var(--yellow);
+    border-color: #D9B920;
+}
+
+/* ============================================================
+   9. АНИМАЦИИ
+   Сюда складываем всё, что двигается.
+   ============================================================
+*/
+
+.card:hover,
+.cart-menu:hover{
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+}
+
+
+.card,
+.cart-menu {
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+/* Задание 2: кнопки отвечают на мышку */
+
+
+.use-btn:hover,
+.delete-btn:hover,
+.buy-all-btn:hover,
+.menu-btn:hover{
+    filter: brightness(1.1);
+    transform: scale(1.05);
+}
+
+
+.use-btn,
+.delete-btn,
+.buy-all-btn,
+.menu-btn{
+    cursor: pointer;
+    transition: transform 0.15s, filter 0.15s;
+}
+
+
+.use-btn:active,
+.delete-btn:active,
+.buy-all-btn:active,
+.menu-btn:active{
+    transform: scale(0.94)
+}
+
+/* Задание 3: содержимое страницы мягко появляется */
+
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+main{
+    animation: appear 0.6s ease-out;
+}
+
+/* Задание 4: карточки топ-3 появляются лесенкой */
+
+.card {
+    animation: appear 0.5s ease-out backwards;
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.3s; }
+.card:nth-child(3) { animation-delay: 0.6s; }
+
+/* Задание 5: логотип и иконки соцсетей */
+
+.footer-left img,
+.left img {
+    cursor: pointer;
+    transition: transform 0.4s;
+}
+
+.footer-left img:hover,
+.left img:hover {
+    transform: rotate(-8deg) scale(1.08);
+}
+
+.footer-right img{
+    transition: transform 0.25s;
+    cursor: pointer;
+}
+
+.footer-right img:hover{
+    transform: translateY(-12px);
+}
+/* Задание 6: главная кнопка пульсирует */
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.55);
+    }
+    50% {
+        transform: scale(1.04);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 30px rgba(255, 255, 255, 0);
+    }
+}
+
+.menu-btn{
+    animation: pulse 2.5s ease-in-out infinite;
+}
+.menu-btn:hover{
+    animation: none;
+}
+
+
+
+.menu-btn {
+    position: relative;   
+    overflow: hidden;     
+}
+
+.menu-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 40%;
     height: 100%;
-    object-fit: cover;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    animation: shine 3s ease-in-out infinite;
+}
+
+@keyframes shine {
+    0%        { left: -60%; }
+    60%, 100% { left: 120%; }
+}
+
+
+
+
+
+
+/* Задание 7: кнопка use пружинит при нажатии */
+
+@keyframes pop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.25); }
+    100% { transform: scale(1); }
+}
+
+
+
+.use-btn.added {
+    background-color: lightgreen;
+    animation: pop 0.4s ease-out;
+}
+
+
+
+@keyframes shake {
+    0%   { transform: rotate(0deg); }
+    40%  { transform: rotate(-10deg); }
+    80% { transform: rotate(10deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.imagee.shake{
+    animation: shake 0.4s ease-in-out;
+}
+
+
+
+/* Задание 8: карточки еды появляются при прокрутке */
+
+.carts-menu-food .cart-menu {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.6s ease-out, transform 0.25s ease-out;
+}
+
+.carts-menu-food .cart-menu.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+.carts-menu-food .cart-menu.visible:hover {
+    transform: translateY(-10px);
 }
