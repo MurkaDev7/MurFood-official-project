@@ -61,24 +61,27 @@ if (useButtons.length > 0) {
             }
 
             saveCart(cart);
-            let shopImage = document.querySelector(".imagee")
-            if (shopImage) {
-                shopImage.classList.add("shake");
-                setTimeout(function () {
-                   shopImage.classList.remove("shake");
-                }, 1000);
-            }
-
 
             // Страницу больше не перезагружаем, поэтому нужно показать,
-            // что клик сработал: на секунду меняем надпись и цвет кнопки.
-            // Так можно спокойно набрать сразу несколько товаров.
+            // что клик сработал. Как выглядит нажатая кнопка, описано в CSS,
+            // а класс added просто включает этот вид.
             button.textContent = 'ok!';
-            button.classList.add("added");
+            button.classList.add('added');
+
+            // иконка корзины в шапке вздрагивает: товар улетел туда
+            let cartIcon = document.querySelector('.imagee');
+
+            if (cartIcon) {
+                cartIcon.classList.add('shake');
+
+                setTimeout(function () {
+                    cartIcon.classList.remove('shake');
+                }, 500);
+            }
 
             setTimeout(function () {
                 button.textContent = 'use';
-                button.classList.remove("added");
+                button.classList.remove('added');
             }, 1000);
         });
     });
@@ -204,6 +207,8 @@ if (foodGrid) {
 let foodCards = document.querySelectorAll('.carts-menu-food .cart-menu');
 
 if (foodCards.length > 0) {
+
+    // наблюдатель сам скажет нам, когда карточка появилась в окне
     let watcher = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
             if (entry.isIntersecting) {
@@ -213,7 +218,9 @@ if (foodCards.length > 0) {
         });
     }, { threshold: 0.2 });
 
-    foodCards.forEach(function (card) {
+    foodCards.forEach(function (card, i) {
+        // каждая следующая карточка чуть позже — получается лесенка
+        card.style.transitionDelay = (i * 0.08) + 's';
         watcher.observe(card);
     });
 }
@@ -222,28 +229,44 @@ if (foodCards.length > 0) {
 // ============================================================
 //  6. СТРАНИЦА LOGIN: ФОРМЫ ВХОДА И РЕГИСТРАЦИИ
 // ============================================================
+
 let loginForm = document.querySelector('.login-form');
+let registerForm = document.querySelector('.register-form');
 
 if (loginForm) {
 
     loginForm.addEventListener('submit', function (event) {
+        // без этой строчки браузер перезагрузит страницу и всё сотрёт
         event.preventDefault();
 
         let login = document.querySelector('#login-login').value.trim();
         let password = document.querySelector('#login-password').value.trim();
 
         let message = loginForm.querySelector('.form-msg');
-        message.textContent = 'логин: ' + login + ', пароль: ' + password;
+
         if (login === '' || password === '') {
             message.textContent = 'Заполни оба поля';
             return;
         }
+
+        let users = readUsers();
+
+        let user = users.find(function (u) {
+            return u.login === login;
+        });
+
+        // одно сообщение на обе ошибки: иначе можно перебором узнать,
+        // какие логины на сайте существуют
+        if (!user || user.password !== password) {
+            message.textContent = 'Неверный логин или пароль';
+            return;
+        }
+
+        localStorage.setItem('murfood:current', user.login);
+        location.href = 'profile.html';
     });
-    
+
 }
-
-
-let registerForm = document.querySelector('.register-form');
 
 if (registerForm) {
 
@@ -260,6 +283,7 @@ if (registerForm) {
             message.textContent = 'Заполни все поля';
             return;
         }
+
         if (login.length < 3) {
             message.textContent = 'Логин слишком короткий';
             return;
@@ -301,12 +325,12 @@ if (registerForm) {
 }
 
 
-
-
 // ============================================================
 //  7. ПАМЯТЬ ПОЛЬЗОВАТЕЛЕЙ
+//
+//  Две двери в память — такие же, как readCart и saveCart
+//  в блоке 3, только коробка называется по-другому.
 // ============================================================
-
 
 function readUsers() {
     let saved = localStorage.getItem('murfood:users');
@@ -320,4 +344,66 @@ function readUsers() {
 
 function saveUsers(users) {
     localStorage.setItem('murfood:users', JSON.stringify(users));
+}
+
+// Кто сейчас вошёл. Если никто — возвращает null.
+function getCurrentUser() {
+    let login = localStorage.getItem('murfood:current');
+
+    if (!login) {
+        return null;
+    }
+
+    let users = readUsers();
+
+    return users.find(function (u) {
+        return u.login === login;
+    });
+}
+
+
+// ============================================================
+//  8. СТРАНИЦА PROFILE
+// ============================================================
+
+let profileBlock = document.querySelector('.profile-block');
+let guestBlock = document.querySelector('.guest-block');
+
+if (profileBlock) {
+
+    let user = getCurrentUser();
+
+    if (!user) {
+        // никто не вошёл — прячем профиль, остаётся приглашение войти
+        profileBlock.classList.add('hidden');
+    } else {
+        guestBlock.classList.add('hidden');
+
+        document.querySelector('#profile-name').textContent = user.name;
+        document.querySelector('#profile-login').textContent = '@' + user.login;
+        document.querySelector('#profile-money').textContent = user.money + '$';
+        document.querySelector('#profile-avatar').src = user.avatar;
+
+        // пустое описание показываем бледной надписью
+        let aboutField = document.querySelector('#profile-about');
+
+        aboutField.textContent = user.about || 'нет описания';
+        aboutField.classList.toggle('empty', user.about === '');
+
+        // выход в два нажатия, чтобы не выйти случайно
+        let logoutButton = document.querySelector('.logout-btn');
+        let armed = false;
+
+        logoutButton.addEventListener('click', function () {
+            if (!armed) {
+                armed = true;
+                logoutButton.textContent = 'Точно выйти?';
+                return;
+            }
+
+            localStorage.removeItem('murfood:current');
+            location.href = 'index.html';
+        });
+    }
+
 }

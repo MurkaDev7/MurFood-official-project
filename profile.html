@@ -20,65 +20,76 @@
     </header>
 
     <main class="main-profile">
-        <div class="Users-Profile">
-            <img src="src/profileP.png" alt="User avatar">
-            <div class="username">
-                <h2>user</h2>
-                <span>@user1</span>
-                <div class="Users-money">
-                    <p>462$</p>
+
+        <div class="profile-block">
+            <div class="Users-Profile">
+                <img id="profile-avatar" src="src/profileP.png" alt="User avatar">
+                <div class="username">
+                    <h2 id="profile-name"></h2>
+                    <span id="profile-login"></span>
+                    <div class="Users-money">
+                        <p id="profile-money"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="Users-description">
+                <p id="profile-about"></p>
+            </div>
+
+            <button class="logout-btn" type="button">выйти</button>
+
+            <section class="favorite-food-section">
+                <h2>User 1's favorite food</h2>
+            </section>
+
+            <div class="favorite-food-grid">
+                <div class="cart-menu">
+                    <div class="first-part">
+                        <p class="p-menu1">pizza</p>
+                        <div class="white-background-imgo">
+                            <img src="src/pizza.png" alt="Pepperoni pizza">
+                        </div>
+                    </div>
+                    <div class="second-part">
+                        <button class="use-btn">use</button>
+                        <p class="p-menu2">16$</p>
+                    </div>
+                </div>
+
+                <div class="cart-menu">
+                    <div class="first-part">
+                        <p class="p-menu1">pizza</p>
+                        <div class="white-background-imgo">
+                            <img src="src/pizza.png" alt="Pepperoni pizza">
+                        </div>
+                    </div>
+                    <div class="second-part">
+                        <button class="use-btn">use</button>
+                        <p class="p-menu2">16$</p>
+                    </div>
+                </div>
+
+                <div class="cart-menu">
+                    <div class="first-part">
+                        <p class="p-menu1">pizza</p>
+                        <div class="white-background-imgo">
+                            <img src="src/pizza.png" alt="Pepperoni pizza">
+                        </div>
+                    </div>
+                    <div class="second-part">
+                        <button class="use-btn">use</button>
+                        <p class="p-menu2">16$</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="Users-description">
-            <p>no description</p>
+        <div class="guest-block">
+            <p>Ты ещё не вошёл</p>
+            <a href="login.html">войти</a>
         </div>
 
-        <section class="favorite-food-section">
-            <h2>User 1's favorite food</h2>
-        </section>
-
-        <div class="favorite-food-grid">
-            <div class="cart-menu">
-                <div class="first-part">
-                    <p class="p-menu1">pizza</p>
-                    <div class="white-background-imgo">
-                        <img src="src/pizza.png" alt="Pepperoni pizza">
-                    </div>
-                </div>
-                <div class="second-part">
-                    <button class="use-btn">use</button>
-                    <p class="p-menu2">16$</p>
-                </div>
-            </div>
-
-            <div class="cart-menu">
-                <div class="first-part">
-                    <p class="p-menu1">pizza</p>
-                    <div class="white-background-imgo">
-                        <img src="src/pizza.png" alt="Pepperoni pizza">
-                    </div>
-                </div>
-                <div class="second-part">
-                    <button class="use-btn">use</button>
-                    <p class="p-menu2">16$</p>
-                </div>
-            </div>
-
-            <div class="cart-menu">
-                <div class="first-part">
-                    <p class="p-menu1">pizza</p>
-                    <div class="white-background-imgo">
-                        <img src="src/pizza.png" alt="Pepperoni pizza">
-                    </div>
-                </div>
-                <div class="second-part">
-                    <button class="use-btn">use</button>
-                    <p class="p-menu2">16$</p>
-                </div>
-            </div>
-        </div>
     </main>
 
     <footer>
