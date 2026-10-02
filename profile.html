@@ -14,8 +14,9 @@
         <div class="header-text-profile">
             <h1>Profile</h1>
         </div>
-        <a href="shop.html">
+        <a class="cart-link" href="shop.html">
             <img class="imagee" src="src/shop-Photoroom.png" alt="Shopping cart">
+            <span class="cart-count"></span>
         </a>
     </header>
 
@@ -37,7 +38,7 @@
                 <p id="profile-about"></p>
             </div>
 
-            <button class="logout-btn" type="button">выйти</button>
+            <button class="logout-btn" type="button">logout</button>
 
             <section class="favorite-food-section">
                 <h2>User 1's favorite food</h2>
@@ -86,15 +87,17 @@
         </div>
 
         <div class="guest-block">
-            <p>Ты ещё не вошёл</p>
-            <a href="login.html">войти</a>
+            <p>You haven't logged in</p>
+            <a href="login.html">login to MurFood</a>
         </div>
 
     </main>
 
     <footer>
         <div class="footer-left">
-            <img src="src/MurFood Logo2.png" alt="MurFood logo">
+            <a href="index.html">
+                    <img src="src/MurFood Logo2.png" alt="MurFood logo">
+            </a>
             <a href="about.html">About</a>
         </div>
         <div class="footer-right">

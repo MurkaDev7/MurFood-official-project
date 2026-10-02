@@ -30,6 +30,13 @@ if (useButtons.length > 0) {
     useButtons.forEach(function (button) {
         button.addEventListener('click', function () {
             // Находим карточку, внутри которой нажали кнопку
+            if(!getCurrentUser()) {
+                button.textContent = "log in!"
+                setTimeout(function() {
+                    button.textContent = "use"
+                }, 1000)
+                return
+            }
             let card = button.closest('.cart-menu');
 
             let title = card.querySelector('.p-menu1').textContent;
@@ -96,17 +103,22 @@ if (useButtons.length > 0) {
 // ============================================================
 
 function readCart() {
-    let saved = localStorage.getItem('cart');
-
-    if (!saved) {
-        return [];
+    let user = getCurrentUser()
+    if(!user) {
+        return []
     }
-
-    return JSON.parse(saved);
+    return user.cart
 }
 
 function saveCart(cart) {
-    localStorage.setItem('cart', JSON.stringify(cart));
+    let user = getCurrentUser()
+
+    if(!user) {
+        return
+    }
+
+    user.cart = cart
+    saveCurrentUser(user)
 }
 
 
@@ -132,13 +144,13 @@ if (foodGrid) {
             return;
         }
 
-        let totalPrice = 0;
+        let totalPrice = getTotal(cart);
 
         for (let i = 0; i < cart.length; i++) {
             let product = cart[i];
             let itemPrice = product.price * product.count;
 
-            totalPrice = totalPrice + itemPrice;
+            // totalPrice = totalPrice + itemPrice; //удалить позже 
 
             foodGrid.insertAdjacentHTML('beforeend', `
                 <div class="cart-menu" data-index="${i}">
@@ -186,20 +198,54 @@ if (foodGrid) {
 
     // Кнопка «buy all»: спасибо за заказ и очищаем корзину
     buyAllButton.addEventListener('click', function () {
-        let cart = readCart();
-
-        if (cart.length > 0) {
-            alert('Thank you for your order!');
-            localStorage.removeItem('cart');
-            showCart();
+        let user = getCurrentUser()
+        let message = document.querySelector(".shop-msg")
+        
+        if(!user) {
+            message.textContent = "Log in first"
+            return
         }
+        let cart = readCart();
+        let total = getTotal(cart)
+        if(cart.length === 0) {
+            message.textContent = "the shop is empty"
+            return
+        }
+        if(total > user.money) {
+            message.textContent = "you are poor"
+            return
+        }
+        user.money -= total
+        user.orders.push({
+            date: new Date().toLocaleDateString(),   // '07.09.2026'
+            total: total,
+            items: cart
+        })
+        user.cart = []
+        saveCurrentUser(user)
+        message.textContent = "thanks for your order"
+        showCart()
+        // if (cart.length > 0) {
+        //     // alert('Thank you for your order!'); сделать в ОФИЦИАЛЬНОЙ ВЕРСИИ САЙТА
+        //     // localStorage.removeItem('cart');
+        //     // showCart();
+        // }
     });
 
+    
     // Показываем корзину сразу при открытии страницы
     showCart();
 }
 
+function getTotal(cart) {
+    let total = 0;
 
+    for (let i = 0; i < cart.length; i++) {
+        total = total + cart[i].price * cart[i].count;
+    }
+
+    return total;
+}
 // ============================================================
 //  5. КАРТОЧКИ ЕДЫ ПОЯВЛЯЮТСЯ ПРИ ПРОКРУТКЕ
 // ============================================================
@@ -258,7 +304,7 @@ if (loginForm) {
         // одно сообщение на обе ошибки: иначе можно перебором узнать,
         // какие логины на сайте существуют
         if (!user || user.password !== password) {
-            message.textContent = 'Неверный логин или пароль';
+            message.textContent = 'Incorrect username or password';
             return;
         }
 
@@ -280,17 +326,17 @@ if (registerForm) {
         let message = registerForm.querySelector('.form-msg');
 
         if (login === '' || password === '' || name === '') {
-            message.textContent = 'Заполни все поля';
+            message.textContent = 'Please enter a username or password';
             return;
         }
 
         if (login.length < 3) {
-            message.textContent = 'Логин слишком короткий';
+            message.textContent = 'Usernames can be 3 to 20 characters long.';
             return;
         }
 
         if (password.length < 4) {
-            message.textContent = 'Пароль слишком короткий';
+            message.textContent = 'Passwords must be between 8 and 200 characters long.';
             return;
         }
 
@@ -301,7 +347,7 @@ if (registerForm) {
         });
 
         if (taken) {
-            message.textContent = 'Такой логин уже есть, придумай другой';
+            message.textContent = 'This username is already in use.';
             return;
         }
 
@@ -318,7 +364,7 @@ if (registerForm) {
 
         saveUsers(users);
 
-        message.textContent = 'Профиль создан! Теперь войди';
+        message.textContent = 'profile created, login';
         registerForm.reset();
     });
 
@@ -347,7 +393,7 @@ function saveUsers(users) {
 }
 
 // Кто сейчас вошёл. Если никто — возвращает null.
-function getCurrentUser() {
+function getCurrentUser() { 
     let login = localStorage.getItem('murfood:current');
 
     if (!login) {
@@ -360,6 +406,20 @@ function getCurrentUser() {
         return u.login === login;
     });
 }
+
+function saveCurrentUser(user) {
+    let users = readUsers()
+
+    let index = users.findIndex(function (u) {
+        return u.login === user.login;
+    });
+    if(index === -1){
+        return
+    }
+    users[index] = user
+    saveUsers(users)
+}
+
 
 
 // ============================================================
@@ -387,7 +447,7 @@ if (profileBlock) {
         // пустое описание показываем бледной надписью
         let aboutField = document.querySelector('#profile-about');
 
-        aboutField.textContent = user.about || 'нет описания';
+        aboutField.textContent = user.about || 'no description';
         aboutField.classList.toggle('empty', user.about === '');
 
         // выход в два нажатия, чтобы не выйти случайно
@@ -397,7 +457,7 @@ if (profileBlock) {
         logoutButton.addEventListener('click', function () {
             if (!armed) {
                 armed = true;
-                logoutButton.textContent = 'Точно выйти?';
+                logoutButton.textContent = 'logout?';
                 return;
             }
 
@@ -407,3 +467,124 @@ if (profileBlock) {
     }
 
 }
+
+let grid = document.querySelector('.favorite-food-grid');
+
+if (grid) {
+    grid.innerHTML = '';
+
+    if (user.orders.length === 0) {
+        grid.innerHTML = '<p class="empty-cart-text">пока ничего не заказано</p>';
+    } else {
+        let last = user.orders[user.orders.length - 1];
+
+        for (let i = 0; i < last.items.length; i++) {
+            let product = last.items[i];
+
+            grid.insertAdjacentHTML('beforeend', `
+                <div class="cart-menu">
+                    <div class="first-part">
+                        <p class="p-menu1">${product.title}</p>
+                        <div class="white-background-imgo">
+                            <img src="${product.img}" alt="${product.title}">
+                        </div>
+                    </div>
+                    <div class="second-part">
+                        <p class="p-menu2">${product.price}$</p>
+                    </div>
+                </div>
+            `);
+        }
+    }
+}
+
+// ============================================================
+//   9 ШАПКА: КТО ВОШЁЛ
+// ============================================================
+
+
+let profileLink = document.querySelector(".profile-link")
+let helloText = document.querySelector(".hello")
+
+if(profileLink) {
+    let headUser = getCurrentUser()
+    if(headUser) {
+        helloText.textContent = "hi, " + headUser.name + "!"
+        profileLink.href = "profile.html"
+        profileLink.querySelector("img").src = headUser.avatar
+    }else{
+        helloText.textContent = ""
+        profileLink.href = "login.html"
+        profileLink.querySelector("img").src = "src/Profile.png"
+    }
+
+    
+}
+
+
+let badge = document.querySelector(".cart-count")
+
+if(badge){
+    let count = readCart().length;
+    badge.textContent = count;
+    badge.classList.toggle('hidden', count === 0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// menu-btn
+
+const buttons = document.querySelectorAll(".menu-btn");
+
+buttons.forEach((button) => {
+    let targetX = 50;
+    let targetY = 50;
+
+    let currentX = 50;
+    let currentY = 50;
+
+    // Получаем позицию мыши
+    button.addEventListener("mousemove", (event) => {
+        const rect = button.getBoundingClientRect();
+
+        targetX = event.clientX - rect.left;
+        targetY = event.clientY - rect.top;
+    });
+
+    // Плавно двигаем градиент к мыши
+    function animate() {
+        currentX += (targetX - currentX) * 0.01;
+        currentY += (targetY - currentY) * 0.01;
+
+        button.style.setProperty("--mouse-x", `${currentX}px`);
+        button.style.setProperty("--mouse-y", `${currentY}px`);
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+});

@@ -140,6 +140,7 @@ main {
 
 /* Кнопка menu — это ссылка <a>, поэтому её нужно
    выровнять по центру вручную и убрать подчёркивание. */
+
 .menu-btn {
     display: flex;
     align-items: center;
@@ -148,12 +149,48 @@ main {
     margin-bottom: 12px;
     width: 458px;
     height: 147px;
-    background-color: var(--yellow);
     border-radius: 50px;
     font-size: 96px;
     color: var(--text-white);
     -webkit-text-stroke: 1px black;
     text-decoration: none;
+
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+
+    background: var(--yellow);
+
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+}
+    
+
+
+/* Градиент */
+.menu-btn::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background: radial-gradient(
+        circle 420px at var(--mouse-x) var(--mouse-y),
+        #44A252 0%,
+        #69b066 35%,
+        transparent 70%
+    );
+
+    opacity: 0;
+
+    transition: opacity 0.5s ease;
+
+    pointer-events: none;
+    z-index: -1;
+}
+
+.menu-btn:hover::before {
+    opacity: 1;
 }
 
 /* Жёлтая полоса с заголовком. Такие же полосы есть
@@ -729,6 +766,7 @@ footer {
 .menu-btn:hover {
     filter: brightness(1.1);
     transform: scale(1.05);
+    
 }
 
 .use-btn:active,
@@ -736,6 +774,7 @@ footer {
 .buy-all-btn:active,
 .menu-btn:active {
     transform: scale(0.94);
+    
 }
 
 /* кнопка use стала частью сайта: без серой рамки и зелёная */
@@ -1061,4 +1100,55 @@ header {
 
 .logout-btn:active {
     transform: scale(0.96);
+}
+
+.hello{
+    text-align: center;
+    margin: 0 20px;
+    font-size: 66px;
+    color: azure;
+    -webkit-text-stroke: 1px black;
+}
+
+
+.profile-link img{
+    border-radius: 50%;
+    border: 5px solid rgb(255, 255, 255);
+    object-fit: cover;
+}
+
+.cart-link{
+    position: relative;
+    display: inline-block;
+}
+
+.cart-count{
+    border-radius: 50%;
+    position: absolute;
+    top: 8px;
+    right: 4px;
+    min-width: 46px;
+    height: 46px;
+    background-color: var(--delete-red);
+    color: var(--text-white);
+    -webkit-text-stroke: 1px black;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+
+.cart-count.hidden{
+    display: none;
+}
+
+.shop-msg {
+    text-align: center;
+    font-size: 32px;
+    color: var(--text-white);
+    -webkit-text-stroke: 1px black;
+    min-height: 44px;
+    margin: 0 0 20px;
 }
