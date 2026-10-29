@@ -27,6 +27,8 @@
     --photo-grey: #EBEBEB;
     --text-white: white;
     --delete-red: #E86A5B;
+    --burger-bun: #d39c59;
+    --burger-beef: #703b3b;
 }
 
 * {
@@ -48,6 +50,10 @@ body {
     background-color: var(--green);
     margin: 0;
     padding: 0;
+}
+
+body.fixed  {
+    position: fixed;
 }
 
 /* main растягивается и занимает всё свободное место между
@@ -140,57 +146,20 @@ main {
 
 /* Кнопка menu — это ссылка <a>, поэтому её нужно
    выровнять по центру вручную и убрать подчёркивание. */
-
 .menu-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    margin-bottom: 12px;
+    margin-bottom: 32px;
     width: 458px;
     height: 147px;
+    background-color: var(--yellow);
     border-radius: 50px;
     font-size: 96px;
     color: var(--text-white);
     -webkit-text-stroke: 1px black;
     text-decoration: none;
-
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-
-    background: var(--yellow);
-
-    --mouse-x: 50%;
-    --mouse-y: 50%;
-}
-    
-
-
-/* Градиент */
-.menu-btn::before {
-    content: "";
-
-    position: absolute;
-    inset: 0;
-
-    background: radial-gradient(
-        circle 420px at var(--mouse-x) var(--mouse-y),
-        #44A252 0%,
-        #69b066 35%,
-        transparent 70%
-    );
-
-    opacity: 0;
-
-    transition: opacity 0.5s ease;
-
-    pointer-events: none;
-    z-index: -1;
-}
-
-.menu-btn:hover::before {
-    opacity: 1;
 }
 
 /* Жёлтая полоса с заголовком. Такие же полосы есть
@@ -316,7 +285,7 @@ footer {
     display: flex;
     justify-content: center;
     gap: 93px;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
 }
 
 .cart-menu {
@@ -527,6 +496,7 @@ footer {
     width: 330px;
     height: 330px;
     margin-right: 50px;
+    border-radius: 86px;
 }
 
 .username {
@@ -766,7 +736,6 @@ footer {
 .menu-btn:hover {
     filter: brightness(1.1);
     transform: scale(1.05);
-    
 }
 
 .use-btn:active,
@@ -774,7 +743,6 @@ footer {
 .buy-all-btn:active,
 .menu-btn:active {
     transform: scale(0.94);
-    
 }
 
 /* кнопка use стала частью сайта: без серой рамки и зелёная */
@@ -966,7 +934,8 @@ header {
 }
 
 .login-form,
-.register-form {
+.register-form,
+.edit-form {
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -975,7 +944,8 @@ header {
 }
 
 .login-form label,
-.register-form label {
+.register-form label,
+.edit-form label {
     font-size: 32px;
     color: var(--text-white);
     -webkit-text-stroke: 1px black;
@@ -983,7 +953,8 @@ header {
 }
 
 .login-form input,
-.register-form input {
+.register-form input,
+.edit-form input {
     font-family: inherit;
     font-size: 28px;
     padding: 10px 18px;
@@ -994,13 +965,15 @@ header {
 
 /* поле подсвечивается, когда в нём стоит курсор */
 .login-form input:focus,
-.register-form input:focus {
+.register-form input:focus,
+.edit-form input:focus {
     outline: 4px solid #FFF0A8;
     border-color: #D9B920;
 }
 
 .login-form button,
-.register-form button {
+.register-form button,
+.edit-form button {
     font-family: inherit;
     font-size: 36px;
     color: var(--text-white);
@@ -1014,13 +987,15 @@ header {
 }
 
 .login-form button:hover,
-.register-form button:hover {
+.register-form button:hover,
+.edit-form button:hover {
     filter: brightness(1.1);
     transform: scale(1.02);
 }
 
 .login-form button:active,
-.register-form button:active {
+.register-form button:active,
+.edit-form button:active {
     transform: scale(0.97);
 }
 
@@ -1034,12 +1009,6 @@ header {
 
 
 /* Задание 5: профиль рисуется из данных */
-
-/* это правило обязано стоять в самом конце файла:
-   оно перебивает display: flex у блоков профиля */
-.hidden {
-    display: none;
-}
 
 .guest-block {
     text-align: center;
@@ -1102,47 +1071,60 @@ header {
     transform: scale(0.96);
 }
 
-.hello{
-    text-align: center;
-    margin: 0 20px;
-    font-size: 66px;
-    color: azure;
+
+/* Задание 7: шапка знает, кто вошёл */
+
+.hello {
+    margin: 0 20px 0 0;
+    font-size: 40px;
+    color: var(--text-white);
     -webkit-text-stroke: 1px black;
+    white-space: nowrap;
 }
 
-
-.profile-link img{
+/* аватар вошедшего прямо в шапке */
+.profile-link img {
+    box-sizing: border-box;   /* рамка внутрь, иначе иконка вылезет из шапки */
+    width: 136px;             /* кружок должен целиком помещаться в шапку */
+    height: 136px;
+    margin-right: 10px;
     border-radius: 50%;
-    border: 5px solid rgb(255, 255, 255);
+    border: 5px solid var(--text-white);
     object-fit: cover;
 }
 
-.cart-link{
+
+/* Задание 8: кружок со счётчиком на корзине */
+
+.cart-link {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
 }
 
-.cart-count{
-    border-radius: 50%;
+.cart-count {
     position: absolute;
-    top: 8px;
-    right: 4px;
+    top: 14px;
+    right: 2px;
     min-width: 46px;
     height: 46px;
-    background-color: var(--delete-red);
+    border-radius: 50%;
+    background: var(--delete-red);
     color: var(--text-white);
-    -webkit-text-stroke: 1px black;
     font-size: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    border: 5px solid rgb(242, 242, 242);
 }
 
-
-.cart-count.hidden{
+.cart-count.hidden {
     display: none;
 }
+
+
+/* Задание 9: сообщения на странице корзины */
 
 .shop-msg {
     text-align: center;
@@ -1151,4 +1133,275 @@ header {
     -webkit-text-stroke: 1px black;
     min-height: 44px;
     margin: 0 0 20px;
+}
+
+
+/* Задание 10: форма редактирования профиля */
+
+.edit-btn {
+    display: block;
+    margin: 20px auto 0;
+    font-family: inherit;
+    font-size: 32px;
+    color: var(--text-white);
+    -webkit-text-stroke: 1px black;
+    background: var(--yellow);
+    border: none;
+    border-radius: 18px;
+    padding: 8px 34px;
+    cursor: pointer;
+    transition: transform 0.15s, filter 0.15s;
+}
+
+.edit-btn:hover {
+    filter: brightness(1.1);
+    transform: scale(1.04);
+}
+
+.edit-btn:active {
+    transform: scale(0.96);
+}
+
+.avatars {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.avatars img {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    background: var(--photo-grey);
+    border: 5px solid transparent;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s;
+}
+
+.avatars img:hover {
+    transform: translateY(-6px);
+}
+
+.avatars img.selected {
+    border-color: var(--text-white);
+}
+
+
+/* ============================================================
+   Это правило обязано стоять в самом конце файла: оно должно
+   перебивать display: flex у профиля и у формы редактирования.
+   ============================================================ */
+
+.hidden {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* menu-btn анимация с градиентом */
+
+
+.menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    width: 458px;
+    height: 147px;
+    border-radius: 50px;
+    font-size: 96px;
+    color: var(--text-white);
+    -webkit-text-stroke: 1px black;
+    text-decoration: none;
+
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+
+    /* Обычный цвет кнопки */
+    background: var(--yellow);
+
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+}
+    
+
+
+/* Градиент */
+.menu-btn::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background: radial-gradient(
+        circle 520px at var(--mouse-x) var(--mouse-y),
+        #cad53b 0%,
+        #148623 35%,
+        transparent 70%
+    );
+
+    opacity: 0;
+
+    
+    transition: opacity 0.5s ease;
+
+    pointer-events: none;
+    z-index: -1;
+}
+
+.menu-btn:hover::before {
+    opacity: 1;
+}
+
+
+/* ============================================================
+11. МЕНЮ И КРУЖОК НА КОРЗИНЕ
+============================================================ */
+
+
+.burger {
+    width: 70px;
+    height: 56px;
+    margin-right: 24px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    z-index: 30;
+}
+
+.burger span {
+    display: block;
+
+    height: 20px;
+    border: 2px solid black;
+    border-radius: 15px;
+    background: var(--text-white);
+    border-radius: 15px;
+    box-sizing: border-box;
+    transition: transform 0.35s, opacity 0.25s;
+}
+
+
+
+
+.burger span:nth-child(1) {
+    background: var(--burger-bun);
+}
+
+
+.burger span:nth-child(2) {
+    background: var(--burger-beef);
+}
+
+
+
+.burger span:nth-child(3) {
+    background: var(--burger-bun);
+}
+/* burger.open */
+
+.burger.open span:nth-child(1) {
+    transform: translateY(23px) rotate(39deg);
+    background-color: var(--delete-red);
+}
+
+.burger.open span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-25px);
+}
+
+.burger.open span:nth-child(3) {
+    transform: translateY(-16px) rotate(144deg);
+    background-color: var(--delete-red);
+}
+
+
+
+.burger:hover span:nth-child(1) { transform: translateY(-4px); }
+.burger:hover span:nth-child(3) { transform: translateY(4px); }
+
+
+/* side menu */
+
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 380px;
+    z-index: 20;
+    background: var(--yellow);
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.25);
+    transform: translateX(100%);
+    transition: transform 0.35s linear;
+}
+
+.side-menu.open{
+    transform: translateX(0);
+}
+
+.side-menu a {
+    font-size: 48px;
+    color: var(--text-white);
+    -webkit-text-stroke: 1px black;
+    text-decoration: none;
+    padding: 10px 0;
+    border-bottom: 3px dashed rgba(0, 0, 0, 0.25);
+    transition: transform 0.35s, box-shadow 0.25s;
+}
+
+.side-menu a:hover{
+    transform: translateX(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+}
+
+.menu-close {
+    align-self: flex-start;
+    background: none;
+    border: none;
+    font-size: 64px;
+    line-height: 1;
+    color: var(--text-white);
+    -webkit-text-stroke: 2px black;
+    cursor: pointer;
+}
+
+.menu-overlay{
+    position: fixed;
+    background-color: rgba(3, 3, 3, 0.5);
+    inset: 0 0 0 0;
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transition: visibilty 0.35, opacity 0.35;
+}
+
+.menu-overlay.open{
+    opacity: 1;
+    visibility: visible;
 }

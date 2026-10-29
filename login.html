@@ -14,40 +14,57 @@
         <div class="header-text-about">
             <h1>login</h1>
         </div>
-        <a class="cart-link" href="shop.html">
+        <button class="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <a href="shop.html">
             <img class="imagee" src="src/shop-Photoroom.png" alt="Shopping cart">
             <span class="cart-count"></span>
         </a>
     </header>
 
+    
+    <div class="menu-overlay"></div>
+    
+    <nav class="side-menu">
+        <button class="menu-close" type="button">×</button>
+        <a href="index.html">Main page</a>
+        <a href="menu.html">Menu</a>
+        <a href="shop.html">Shop</a>
+        <a href="profile.html">Profile</a>
+        <a href="about.html">About</a>
+    </nav>
+    
     <main class="main-login">
 
-        <h2 class="login-title">login to MurFood</h2>
+        <h2 class="login-title">login</h2>
 
         <form class="login-form">
-            <label for="login-login">Username</label>
+            <label for="login-login">username</label>
             <input id="login-login" type="text">
 
             <label for="login-password">password</label>
             <input id="login-password" type="password">
 
-            <button type="submit">log in</button>
+            <button type="submit">login</button>
             <p class="form-msg"></p>
         </form>
 
-        <h2 class="login-title">sign up</h2>
+        <h2 class="login-title">registration</h2>
 
         <form class="register-form">
-            <label for="reg-login">Username</label>
+            <label for="reg-login">username</label>
             <input id="reg-login" type="text">
 
-            <label for="reg-password">Password</label>
+            <label for="reg-password">password</label>
             <input id="reg-password" type="password">
 
             <label for="reg-name">name</label>
             <input id="reg-name" type="text">
 
-            <button type="submit">sign up</button>
+            <button type="submit">create profile</button>
             <p class="form-msg"></p>
         </form>
 

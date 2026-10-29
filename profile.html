@@ -14,12 +14,30 @@
         <div class="header-text-profile">
             <h1>Profile</h1>
         </div>
-        <a class="cart-link" href="shop.html">
-            <img class="imagee" src="src/shop-Photoroom.png" alt="Shopping cart">
+        <button class="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <a href="shop.html">
+            <img class="imagee" src="src/shop-Photoroom.png" alt="Shopping cart">\
             <span class="cart-count"></span>
+            
         </a>
     </header>
 
+    
+    <div class="menu-overlay"></div>
+    
+    <nav class="side-menu">
+        <button class="menu-close" type="button">×</button>
+        <a href="index.html">Main page</a>
+        <a href="menu.html">Menu</a>
+        <a href="shop.html">Shop</a>
+        <a href="profile.html">Profile</a>
+        <a href="about.html">About</a>
+    </nav>
+    
     <main class="main-profile">
 
         <div class="profile-block">
@@ -38,57 +56,43 @@
                 <p id="profile-about"></p>
             </div>
 
+            <button class="edit-btn" type="button">change</button>
+
             <button class="logout-btn" type="button">logout</button>
 
             <section class="favorite-food-section">
                 <h2>User 1's favorite food</h2>
             </section>
 
-            <div class="favorite-food-grid">
-                <div class="cart-menu">
-                    <div class="first-part">
-                        <p class="p-menu1">pizza</p>
-                        <div class="white-background-imgo">
-                            <img src="src/pizza.png" alt="Pepperoni pizza">
-                        </div>
-                    </div>
-                    <div class="second-part">
-                        <button class="use-btn">use</button>
-                        <p class="p-menu2">16$</p>
-                    </div>
-                </div>
-
-                <div class="cart-menu">
-                    <div class="first-part">
-                        <p class="p-menu1">pizza</p>
-                        <div class="white-background-imgo">
-                            <img src="src/pizza.png" alt="Pepperoni pizza">
-                        </div>
-                    </div>
-                    <div class="second-part">
-                        <button class="use-btn">use</button>
-                        <p class="p-menu2">16$</p>
-                    </div>
-                </div>
-
-                <div class="cart-menu">
-                    <div class="first-part">
-                        <p class="p-menu1">pizza</p>
-                        <div class="white-background-imgo">
-                            <img src="src/pizza.png" alt="Pepperoni pizza">
-                        </div>
-                    </div>
-                    <div class="second-part">
-                        <button class="use-btn">use</button>
-                        <p class="p-menu2">16$</p>
-                    </div>
-                </div>
-            </div>
+            <!-- Этот блок пустой специально: сюда main.js кладёт
+                 то, что человек заказал в последний раз -->
+            <div class="favorite-food-grid"></div>
         </div>
 
+        <form class="edit-form hidden">
+            <label for="edit-name">Name</label>
+            <input id="edit-name" type="text">
+
+            <label for="edit-about">About</label>
+            <input id="edit-about" type="text">
+
+            <label>Avatar</label>
+            <div class="avatars">
+                <img src="src/profileP.png" alt="standart">
+                <img src="src/pizza.png" alt="pizza">
+                <img src="src/water.png" alt="water">
+                <img src="src/sprite.png" alt="sprite">
+            </div>
+
+            <label for="edit-file">import avatar</label>
+            <input id="edit-file" type="file" accept="image/*">
+
+            <button type="submit">save</button>
+        </form>
+
         <div class="guest-block">
-            <p>You haven't logged in</p>
-            <a href="login.html">login to MurFood</a>
+            <p>You didn't log in.</p>
+            <a href="login.html">log in</a>
         </div>
 
     </main>
@@ -96,7 +100,7 @@
     <footer>
         <div class="footer-left">
             <a href="index.html">
-                    <img src="src/MurFood Logo2.png" alt="MurFood logo">
+                <img src="src/MurFood Logo2.png" alt="MurFood logo">
             </a>
             <a href="about.html">About</a>
         </div>

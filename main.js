@@ -29,14 +29,18 @@ let useButtons = document.querySelectorAll('.use-btn');
 if (useButtons.length > 0) {
     useButtons.forEach(function (button) {
         button.addEventListener('click', function () {
-            // Находим карточку, внутри которой нажали кнопку
-            if(!getCurrentUser()) {
-                button.textContent = "log in!"
-                setTimeout(function() {
-                    button.textContent = "use"
-                }, 1000)
-                return
+            // Корзина теперь лежит внутри человека. Нет человека — нет корзины.
+            if (!getCurrentUser()) {
+                button.textContent = 'login!';
+
+                setTimeout(function () {
+                    button.textContent = 'use';
+                }, 1000);
+
+                return;
             }
+
+            // Находим карточку, внутри которой нажали кнопку
             let card = button.closest('.cart-menu');
 
             let title = card.querySelector('.p-menu1').textContent;
@@ -98,27 +102,31 @@ if (useButtons.length > 0) {
 // ============================================================
 //  3. ПАМЯТЬ КОРЗИНЫ
 //
-//  localStorage — это память браузера. Она умеет хранить
-//  только текст, поэтому массив мы превращаем в текст и обратно.
+//  Раньше корзина была одна на всех и лежала в коробке 'cart'.
+//  Теперь она лежит внутри человека, и у каждого она своя.
+//  Поменялись только эти две двери — весь остальной код
+//  корзины остался точно таким же.
 // ============================================================
 
 function readCart() {
-    let user = getCurrentUser()
-    if(!user) {
-        return []
+    let user = getCurrentUser();
+
+    if (!user) {
+        return [];
     }
-    return user.cart
+
+    return user.cart;
 }
 
 function saveCart(cart) {
-    let user = getCurrentUser()
+    let user = getCurrentUser();
 
-    if(!user) {
-        return
+    if (!user) {
+        return;
     }
 
-    user.cart = cart
-    saveCurrentUser(user)
+    user.cart = cart;
+    saveCurrentUser(user);
 }
 
 
@@ -128,6 +136,18 @@ function saveCart(cart) {
 
 let foodGrid = document.querySelector('.food-grid');
 let buyAllButton = document.querySelector('.buy-all-btn');
+
+// Сумма корзины нужна в двух местах: на кнопке и при покупке.
+// Одно действие — одна функция.
+function getTotal(cart) {
+    let total = 0;
+
+    for (let i = 0; i < cart.length; i++) {
+        total = total + cart[i].price * cart[i].count;
+    }
+
+    return total;
+}
 
 if (foodGrid) {
 
@@ -149,8 +169,6 @@ if (foodGrid) {
         for (let i = 0; i < cart.length; i++) {
             let product = cart[i];
             let itemPrice = product.price * product.count;
-
-            // totalPrice = totalPrice + itemPrice; //удалить позже 
 
             foodGrid.insertAdjacentHTML('beforeend', `
                 <div class="cart-menu" data-index="${i}">
@@ -196,56 +214,51 @@ if (foodGrid) {
         });
     }
 
-    // Кнопка «buy all»: спасибо за заказ и очищаем корзину
+    // Кнопка «buy all»: считаем, проверяем, списываем
     buyAllButton.addEventListener('click', function () {
-        let user = getCurrentUser()
-        let message = document.querySelector(".shop-msg")
-        
-        if(!user) {
-            message.textContent = "Log in first"
-            return
+        let user = getCurrentUser();
+        let message = document.querySelector('.shop-msg');
+
+        if (!user) {
+            message.textContent = 'Login';
+            return;
         }
+
         let cart = readCart();
-        let total = getTotal(cart)
-        if(cart.length === 0) {
-            message.textContent = "the shop is empty"
-            return
+        let total = getTotal(cart);
+
+        if (cart.length === 0) {
+            message.textContent = 'The shop is empty';
+            return;
         }
-        if(total > user.money) {
-            message.textContent = "you are poor"
-            return
+
+        if (total > user.money) {
+            message.textContent = 'You are poor ):';
+            return;
         }
-        user.money -= total
+
+        // Меняем всё, что надо, и только потом сохраняем — один раз
+        user.money = user.money - total;
+
         user.orders.push({
-            date: new Date().toLocaleDateString(),   // '07.09.2026'
+            date: new Date().toLocaleDateString(),
             total: total,
             items: cart
-        })
-        user.cart = []
-        saveCurrentUser(user)
-        message.textContent = "thanks for your order"
-        showCart()
-        // if (cart.length > 0) {
-        //     // alert('Thank you for your order!'); сделать в ОФИЦИАЛЬНОЙ ВЕРСИИ САЙТА
-        //     // localStorage.removeItem('cart');
-        //     // showCart();
-        // }
+        });
+
+        user.cart = [];
+
+        saveCurrentUser(user);
+
+        message.textContent = 'ok';
+        showCart();
     });
 
-    
     // Показываем корзину сразу при открытии страницы
     showCart();
 }
 
-function getTotal(cart) {
-    let total = 0;
 
-    for (let i = 0; i < cart.length; i++) {
-        total = total + cart[i].price * cart[i].count;
-    }
-
-    return total;
-}
 // ============================================================
 //  5. КАРТОЧКИ ЕДЫ ПОЯВЛЯЮТСЯ ПРИ ПРОКРУТКЕ
 // ============================================================
@@ -291,7 +304,7 @@ if (loginForm) {
         let message = loginForm.querySelector('.form-msg');
 
         if (login === '' || password === '') {
-            message.textContent = 'Заполни оба поля';
+            message.textContent = 'no password, no username';
             return;
         }
 
@@ -304,7 +317,7 @@ if (loginForm) {
         // одно сообщение на обе ошибки: иначе можно перебором узнать,
         // какие логины на сайте существуют
         if (!user || user.password !== password) {
-            message.textContent = 'Incorrect username or password';
+            message.textContent = 'invalid login or password';
             return;
         }
 
@@ -326,17 +339,17 @@ if (registerForm) {
         let message = registerForm.querySelector('.form-msg');
 
         if (login === '' || password === '' || name === '') {
-            message.textContent = 'Please enter a username or password';
+            message.textContent = 'Username and password required';
             return;
         }
 
         if (login.length < 3) {
-            message.textContent = 'Usernames can be 3 to 20 characters long.';
+            message.textContent = 'Login is too short';
             return;
         }
 
         if (password.length < 4) {
-            message.textContent = 'Passwords must be between 8 and 200 characters long.';
+            message.textContent = 'Password is too short';
             return;
         }
 
@@ -347,7 +360,7 @@ if (registerForm) {
         });
 
         if (taken) {
-            message.textContent = 'This username is already in use.';
+            message.textContent = 'This username is already in use';
             return;
         }
 
@@ -364,7 +377,7 @@ if (registerForm) {
 
         saveUsers(users);
 
-        message.textContent = 'profile created, login';
+        message.textContent = 'Profile created, login';
         registerForm.reset();
     });
 
@@ -392,8 +405,25 @@ function saveUsers(users) {
     localStorage.setItem('murfood:users', JSON.stringify(users));
 }
 
+// getCurrentUser отдаёт копию. Чтобы изменения не пропали,
+// копию надо положить обратно в список и сохранить его целиком.
+function saveCurrentUser(user) {
+    let users = readUsers();
+
+    let index = users.findIndex(function (u) {
+        return u.login === user.login;
+    });
+
+    if (index === -1) {
+        return;
+    }
+
+    users[index] = user;
+    saveUsers(users);
+}
+
 // Кто сейчас вошёл. Если никто — возвращает null.
-function getCurrentUser() { 
+function getCurrentUser() {
     let login = localStorage.getItem('murfood:current');
 
     if (!login) {
@@ -407,20 +437,6 @@ function getCurrentUser() {
     });
 }
 
-function saveCurrentUser(user) {
-    let users = readUsers()
-
-    let index = users.findIndex(function (u) {
-        return u.login === user.login;
-    });
-    if(index === -1){
-        return
-    }
-    users[index] = user
-    saveUsers(users)
-}
-
-
 
 // ============================================================
 //  8. СТРАНИЦА PROFILE
@@ -433,12 +449,9 @@ if (profileBlock) {
 
     let user = getCurrentUser();
 
-    if (!user) {
-        // никто не вошёл — прячем профиль, остаётся приглашение войти
-        profileBlock.classList.add('hidden');
-    } else {
-        guestBlock.classList.add('hidden');
-
+    // Рисование профиля нужно в двух местах: при загрузке страницы
+    // и после сохранения изменений. Значит — функция.
+    function drawProfile() {
         document.querySelector('#profile-name').textContent = user.name;
         document.querySelector('#profile-login').textContent = '@' + user.login;
         document.querySelector('#profile-money').textContent = user.money + '$';
@@ -449,33 +462,24 @@ if (profileBlock) {
 
         aboutField.textContent = user.about || 'no description';
         aboutField.classList.toggle('empty', user.about === '');
-
-        // выход в два нажатия, чтобы не выйти случайно
-        let logoutButton = document.querySelector('.logout-btn');
-        let armed = false;
-
-        logoutButton.addEventListener('click', function () {
-            if (!armed) {
-                armed = true;
-                logoutButton.textContent = 'logout?';
-                return;
-            }
-
-            localStorage.removeItem('murfood:current');
-            location.href = 'index.html';
-        });
     }
 
-}
+    // Вместо трёх намертво вписанных пицц — то, что человек
+    // заказал в последний раз. Ради этого мы и сохраняли items.
+    function drawLastOrder() {
+        let grid = document.querySelector('.favorite-food-grid');
 
-let grid = document.querySelector('.favorite-food-grid');
+        if (!grid) {
+            return;
+        }
 
-if (grid) {
-    grid.innerHTML = '';
+        grid.innerHTML = '';
 
-    if (user.orders.length === 0) {
-        grid.innerHTML = '<p class="empty-cart-text">пока ничего не заказано</p>';
-    } else {
+        if (user.orders.length === 0) {
+            grid.innerHTML = '<p class="empty-cart-text">пока ничего не заказано</p>';
+            return;
+        }
+
         let last = user.orders[user.orders.length - 1];
 
         for (let i = 0; i < last.items.length; i++) {
@@ -496,67 +500,214 @@ if (grid) {
             `);
         }
     }
-}
 
-// ============================================================
-//   9 ШАПКА: КТО ВОШЁЛ
-// ============================================================
+    if (!user) {
+        // никто не вошёл — прячем профиль, остаётся приглашение войти
+        profileBlock.classList.add('hidden');
+    } else {
+        guestBlock.classList.add('hidden');
 
+        drawProfile();
+        drawLastOrder();
 
-let profileLink = document.querySelector(".profile-link")
-let helloText = document.querySelector(".hello")
+        // ---------- выход ----------
 
-if(profileLink) {
-    let headUser = getCurrentUser()
-    if(headUser) {
-        helloText.textContent = "hi, " + headUser.name + "!"
-        profileLink.href = "profile.html"
-        profileLink.querySelector("img").src = headUser.avatar
-    }else{
-        helloText.textContent = ""
-        profileLink.href = "login.html"
-        profileLink.querySelector("img").src = "src/Profile.png"
+        // в два нажатия, чтобы не выйти случайно
+        let logoutButton = document.querySelector('.logout-btn');
+        let armed = false;
+
+        logoutButton.addEventListener('click', function () {
+            if (!armed) {
+                armed = true;
+                logoutButton.textContent = 'logout???';
+                return;
+            }
+
+            localStorage.removeItem('murfood:current');
+            location.href = 'index.html';
+        });
+
+        // ---------- редактирование ----------
+
+        let editButton = document.querySelector('.edit-btn');
+        let editForm = document.querySelector('.edit-form');
+        let avatars = document.querySelectorAll('.avatars img');
+
+        // что выбрано прямо сейчас
+        let chosen = user.avatar;
+
+        editButton.addEventListener('click', function () {
+            // профиль и форма меняются местами
+            profileBlock.classList.add('hidden');
+            editForm.classList.remove('hidden');
+
+            // в полях сразу то, что есть сейчас — а не пустота
+            document.querySelector('#edit-name').value = user.name;
+            document.querySelector('#edit-about').value = user.about;
+
+            chosen = user.avatar;
+
+            avatars.forEach(function (img) {
+                img.classList.remove('selected');
+
+                if (img.getAttribute('src') === user.avatar) {
+                    img.classList.add('selected');
+                }
+            });
+        });
+
+        avatars.forEach(function (img) {
+            img.addEventListener('click', function () {
+                avatars.forEach(function (other) {
+                    other.classList.remove('selected');
+                });
+
+                img.classList.add('selected');
+
+                // getAttribute отдаёт путь так, как он написан в HTML
+                chosen = img.getAttribute('src');
+            });
+        });
+
+        // своя картинка с компьютера
+        let fileInput = document.querySelector('#edit-file');
+
+        if (fileInput) {
+            fileInput.addEventListener('change', function (event) {
+                let file = event.target.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+                // в памяти браузера живёт только текст, поэтому
+                // FileReader превращает картинку в очень длинную строку
+                let reader = new FileReader();
+
+                reader.addEventListener('load', function () {
+                    chosen = reader.result;
+
+                    avatars.forEach(function (other) {
+                        other.classList.remove('selected');
+                    });
+                });
+
+                reader.readAsDataURL(file);
+            });
+        }
+
+        editForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // логин не меняем: по нему человек и находится в списке
+            user.name = document.querySelector('#edit-name').value.trim();
+            user.about = document.querySelector('#edit-about').value.trim();
+            user.avatar = chosen;
+
+            saveCurrentUser(user);
+
+            editForm.classList.add('hidden');
+            profileBlock.classList.remove('hidden');
+
+            drawProfile();
+        });
     }
 
+}
+
+
+// ============================================================
+//  9. ШАПКА: КТО ВОШЁЛ
+// ============================================================
+
+let profileLink = document.querySelector('.profile-link');
+let helloText = document.querySelector('.hello');
+
+if (profileLink) {
+
+    let headUser = getCurrentUser();
+
+    if (headUser) {
+        helloText.textContent = 'hi, ' + headUser.name + '!';
+        profileLink.href = 'profile.html';
+        profileLink.querySelector('img').src = headUser.avatar;
+    } else {
+        // гостю незачем идти в профиль — ведём сразу на вход
+        helloText.textContent = '';
+        profileLink.href = 'login.html';
+        profileLink.querySelector('img').src = 'src/Profile.png';
+    }
+
+    // кружок с числом товаров на корзине
+    let badge = document.querySelector('.cart-count');
     
+    if (badge) {
+        let count = readCart().length;
+        
+        badge.textContent = count;
+        badge.classList.toggle('hidden', count === 0);
+    }    
+    
+}    
+
+
+
+// ============================================================
+//  10. ВЫЕЗЖАЮЩЕЕ МЕНЮ
+// ============================================================
+
+let menuOverlay = document.querySelector('.menu-overlay')
+let burger = document.querySelector('.burger');
+let sideMenu = document.querySelector('.side-menu');
+let menuClose = document.querySelector('.menu-close');
+let body = document.body
+
+
+if (burger) {
+    function openMenu() {
+        sideMenu.classList.add("open");
+        menuOverlay.classList.add("open");
+        body.classList.add('fixed')
+        burger.classList.add('open')
+    }
+
+    function closeMenu() {
+        sideMenu.classList.remove("open")
+        menuOverlay.classList.remove('open')
+        body.classList.remove('fixed')
+        burger.classList.remove('open')
+    }
+
+    burger.addEventListener('click', function() {
+        if(sideMenu.classList.contains(open)) {
+            closeMenu()
+        }else{
+            openMenu()
+        }
+    })
+
+    
+
+
+    menuClose.addEventListener('click', closeMenu);
+    menuOverlay.addEventListener('click', closeMenu);
+
+    document.addEventListener("keydown", function(e) {
+        if(e.key === 'Escape') {
+            sideMenu.classList.remove('open');
+            menuOverlay.classList.remove('open')
+            body.classList.remove('fixed')
+            burger.classList.remove('open')
+        }
+    })
+
 }
 
 
-let badge = document.querySelector(".cart-count")
-
-if(badge){
-    let count = readCart().length;
-    badge.textContent = count;
-    badge.classList.toggle('hidden', count === 0);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// menu-btn
+// 
+// ДОПОЛНИТЕЛЬНО
+// 
+// menu-btn анимация градиента 
 
 const buttons = document.querySelectorAll(".menu-btn");
 
@@ -573,18 +724,23 @@ buttons.forEach((button) => {
 
         targetX = event.clientX - rect.left;
         targetY = event.clientY - rect.top;
-    });
+    });    
 
     // Плавно двигаем градиент к мыши
     function animate() {
-        currentX += (targetX - currentX) * 0.01;
-        currentY += (targetY - currentY) * 0.01;
+        currentX += (targetX - currentX) * 0.02;
+        currentY += (targetY - currentY) * 0.02;
 
         button.style.setProperty("--mouse-x", `${currentX}px`);
         button.style.setProperty("--mouse-y", `${currentY}px`);
 
         requestAnimationFrame(animate);
-    }
+    }    
 
     animate();
-});
+});    
+
+
+
+
+
