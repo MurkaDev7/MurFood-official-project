@@ -704,6 +704,37 @@ if (burger) {
 }
 
 
+/* ============================================================
+12. СМЕНА ТЕМЫ
+============================================================ */
+
+let white = document.querySelector('.white')
+let blue = document.querySelector('.blue')
+let yellow = document.querySelector('.green')
+let red = document.querySelector('.red')
+
+
+
+white.addEventListener('click', function() {
+    document.documentElement.style.setProperty('--green', '#2b2b2b');
+    document.documentElement.style.setProperty('--yellow', '#b7b7b7');
+})
+
+blue.addEventListener('click', function() {
+    document.documentElement.style.setProperty('--green', '#447fa2');
+    document.documentElement.style.setProperty('--yellow', '#201fbf');
+})
+
+yellow.addEventListener('click', function() {
+    document.documentElement.style.setProperty('--green', '#44A252');
+    document.documentElement.style.setProperty('--yellow', '#EDCF36');
+})
+
+
+red.addEventListener('click', function() {
+    document.documentElement.style.setProperty('--green', '#a33838');
+    document.documentElement.style.setProperty('--yellow', '#c5aa24');
+})
 // 
 // ДОПОЛНИТЕЛЬНО
 // 

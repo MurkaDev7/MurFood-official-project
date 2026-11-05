@@ -1405,3 +1405,67 @@ header {
     opacity: 1;
     visibility: visible;
 }
+
+
+/* ============================================================
+13. СМЕНА ТЕМЫ
+============================================================ */
+
+.colors{
+    display: flex;
+    gap: 15px;
+}
+
+.white{
+    background-color: #a0a0a0;
+    border-radius: 50px;
+    width: 80px;
+    height: 80px;
+    transition: transform 0.17s linear;
+    cursor: pointer;
+}
+
+.blue{
+    background-color: #448fa2;
+    border-radius: 50px;
+    width: 80px;
+    height: 80px;
+    transition: transform 0.17s linear;
+    cursor: pointer;
+}
+
+
+.green{
+    background-color: #d0bf52;
+    border-radius: 50px;
+    width: 80px;
+    height: 80px;
+    transition: transform 0.17s linear;
+    cursor: pointer;
+}
+
+.red{
+    background-color: #a12626;
+    border-radius: 50px;
+    width: 80px;
+    height: 80px;
+    transition: transform 0.17s linear;
+    cursor: pointer;
+}
+
+/* hover */
+.white:hover{
+    transform: translateY(-10px);
+}
+
+.blue:hover{
+    transform: translateY(-10px);
+}
+
+.green:hover{
+    transform: translateY(-10px);
+}
+
+.red:hover{
+    transform: translateY(-10px);
+}
