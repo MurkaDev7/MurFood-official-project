@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MurFood - login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header-about">
+        <div class="header-left-about">
+            <img class="back-btn" src="src/back.png" alt="Back">
+        </div>
+        <div class="header-text-about">
+            <h1>login</h1>
+        </div>
+        <button class="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <a href="shop.html">
+            <img class="imagee" src="src/shop-Photoroom.png" alt="Shopping cart">
+            <span class="cart-count"></span>
+        </a>
+    </header>
+
+    
+    <div class="menu-overlay"></div>
+    
+    <nav class="side-menu">
+        <button class="menu-close" type="button">×</button>
+        <a href="index.html">Main page</a>
+        <a href="menu.html">Menu</a>
+        <a href="shop.html">Shop</a>
+        <a href="profile.html">Profile</a>
+        <a href="about.html">About</a>
+        <div class="colors">
+            <div class="white"></div>
+            <div class="blue"></div>
+            <div class="green"></div>
+            <div class="red"></div>
+        </div>
+    </nav>
+    
+    <main class="main-login">
+
+        <h2 class="login-title">login</h2>
+
+        <form class="login-form">
+            <label for="login-login">username</label>
+            <input id="login-login" type="text">
+
+            <label for="login-password">password</label>
+            <input id="login-password" type="password">
+
+            <button type="submit">login</button>
+            <p class="form-msg"></p>
+        </form>
+
+        <h2 class="login-title">registration</h2>
+
+        <form class="register-form">
+            <label for="reg-login">username</label>
+            <input id="reg-login" type="text">
+
+            <label for="reg-password">password</label>
+            <input id="reg-password" type="password">
+
+            <label for="reg-name">name</label>
+            <input id="reg-name" type="text">
+
+            <button type="submit">create profile</button>
+            <p class="form-msg"></p>
+        </form>
+
+    </main>
+
+    <footer>
+        <div class="footer-left">
+            <a href="index.html">
+                <img src="src/MurFood Logo2.png" alt="MurFood logo">
+            </a>
+            <a href="about.html">About</a>
+        </div>
+        <div class="footer-right">
+            <img class="discord" src="src/Discord 1.png" alt="Discord">
+            <img class="youtube" src="src/Youtube 1.png" alt="YouTube">
+            <img class="telegram" src="src/Telegram 1.png" alt="Telegram">
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
